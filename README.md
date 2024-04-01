@@ -5,9 +5,7 @@ import numpy as np
 import cv2 as cv
 
 def select_img_from_video(video_file, board_pattern, select_all=False, wait_msec=10):
-    
-    video = cv.VideoCapture(video_file)
-    
+    video = cv.VideoCapture(video_file)  
     img_select = []
     while True:
         ret, frame = video.read()
@@ -48,9 +46,9 @@ def calib_camera_from_chessboard(images, board_pattern, board_cellsize, K=None, 
     return cv.calibrateCamera(obj_points, img_points, gray.shape[::-1], K, dist_coeff, flags=calib_flags)
 
 if __name__ == "__main__"
-    video_file = 'C:/Users/user/Downloads/chessboard.mp4'  # 실제 파일 경로로 변경해야 합니다.
-    board_pattern = (9, 7)  # 체스판 내부 코너점의 가로 및 세로 개수
-    board_cellsize = 0.5  # 체스판의 각 셀의 크기 (미터)
+    video_file = 'C:/Users/user/Downloads/chessboard.mp4' 
+    board_pattern = (9, 7) 
+    board_cellsize = 0.5  
     selected_images = select_img_from_video(video_file, board_pattern)
 
     try:
