@@ -4,46 +4,45 @@
 import numpy as np
 import cv2 as cv
 
-def select_img_from_video(video_file, board_pattern, select_all=False, wait_msec=10):
-    video = cv.VideoCapture(video_file)  
-    img_select = []
-    while True:
-        ret, frame = video.read()
-        if not ret:
-            break
-        gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-        complete, pts = cv.findChessboardCorners(gray, board_pattern)
-        if complete:
-            img_select.append(frame)
-            if not select_all:
+    def select_img_from_video(video_file, board_pattern, select_all=False, wait_msec=10):
+        video = cv.VideoCapture(video_file)  
+        img_select = []
+        while True:
+            ret, frame = video.read()
+            if not ret:
                 break
-        cv.imshow('Select images from video', frame)
-        if cv.waitKey(wait_msec) & 0xFF == ord('q'):
-            break
-    video.release()
-    cv.destroyAllWindows()
-    return img_select
+            gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+            complete, pts = cv.findChessboardCorners(gray, board_pattern)
+            if complete:
+                img_select.append(frame)
+                if not select_all:
+                    break
+            cv.imshow('Select images from video', frame)
+            if cv.waitKey(wait_msec) & 0xFF == ord('q'):
+                break
+        video.release()
+        cv.destroyAllWindows()
+        return img_select
 
-def calib_camera_from_chessboard(images, board_pattern, board_cellsize, K=None, dist_coeff=None, calib_flags=None):
+    def calib_camera_from_chessboard(images, board_pattern, board_cellsize, K=None, dist_coeff=None, calib_flags=None):
+        img_points = []
+        for img in images:
+            gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+            complete, pts = cv.findChessboardCorners(gray, board_pattern)
+            if complete:
+                img_points.append(pts)
+            else:
+                print("Warning: Incomplete chessboard points found in one or more images.")
+        assert len(img_points) > 0, 'There is no set of complete chessboard points!'
+        
+        
+        obj_pts = np.zeros((board_pattern[0] * board_pattern[1], 3), np.float32)
+        obj_pts[:, :2] = np.mgrid[0:board_pattern[0], 0:board_pattern[1]].T.reshape(-1, 2)
+        obj_pts *= board_cellsize
+        obj_points = [obj_pts] * len(img_points)
     
-    img_points = []
-    for img in images:
-        gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-        complete, pts = cv.findChessboardCorners(gray, board_pattern)
-        if complete:
-            img_points.append(pts)
-        else:
-            print("Warning: Incomplete chessboard points found in one or more images.")
-    assert len(img_points) > 0, 'There is no set of complete chessboard points!'
-    
-    
-    obj_pts = np.zeros((board_pattern[0] * board_pattern[1], 3), np.float32)
-    obj_pts[:, :2] = np.mgrid[0:board_pattern[0], 0:board_pattern[1]].T.reshape(-1, 2)
-    obj_pts *= board_cellsize
-    obj_points = [obj_pts] * len(img_points)
-
-    
-    return cv.calibrateCamera(obj_points, img_points, gray.shape[::-1], K, dist_coeff, flags=calib_flags)
+        
+        return cv.calibrateCamera(obj_points, img_points, gray.shape[::-1], K, dist_coeff, flags=calib_flags)
 
 if __name__ == "__main__"
     video_file = 'C:/Users/user/Downloads/chessboard.mp4' 
