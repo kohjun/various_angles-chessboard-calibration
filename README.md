@@ -78,8 +78,11 @@ if __name__ == "__main__"
 
 위코드는 동영상으로 찍은 체스판에서 체스판을 인식하여
 Calibration Results를 얻어 distortion correction을 하는 과정이지만
-
+[chessboard.mp4]
 ![image](https://github.com/kohjun/various_angles-chessboard-calibration/assets/82298792/98924c87-a68c-4770-a481-7fcece2377ff)
+[chessboard.jpg]
+
+![image](https://github.com/kohjun/various_angles-chessboard-calibration/assets/82298792/8998dcbf-ffe2-425d-9743-75c80e8b9022)
 
 **[코드를 실행한 결과]**
 Exception has occurred: AssertionError
