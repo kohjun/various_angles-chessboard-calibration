@@ -1,7 +1,7 @@
 # various_angles-chessboard-calibration
 다양한 각도에서 찍은 체스판 보정
 
-
+#code 
 import numpy as np
 import cv2 as cv
 
@@ -38,13 +38,6 @@ if __name__ == '__main__':
     print(K)
     print("Distortion coefficients:")
     print(dist_coeff)
-
-
-
-
-
-
-
 
 
 
