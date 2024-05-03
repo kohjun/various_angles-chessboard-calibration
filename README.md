@@ -82,7 +82,11 @@ if __name__ == '__main__':
 위코드는 동영상으로 찍은 체스판에서 체스판을 인식하여
 Calibration Results를 얻어 distortion correction을 하는 과정
 
+
 변환 전 
+
 ![image](https://github.com/kohjun/various_angles-chessboard-calibration/assets/82298792/32780999-3685-4426-a569-c950b9d854c8)
+
+
 변환 후
 ![image](https://github.com/kohjun/various_angles-chessboard-calibration/assets/82298792/baba5eba-79ee-47a8-936f-319ff2b931cc)
